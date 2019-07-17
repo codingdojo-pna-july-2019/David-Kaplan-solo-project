@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+	<!-- <link rel="stylesheet" type="text/javascript" href="{{ url_for('static', filename='js/main.js') }}"> -->
+	<title>Devs On Deck</title>
+</head>
+<body>
+
+	<!-- Bootstrap Navigation Bar (Fixed) -->
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/">DevsOnDeck</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		{% if cur_dev.id == session.userid and session.acct_type == 'dev' %}
+			<h4 class="ml-auto" style="color:white;">Welcome back, {{ cur_dev.first_name }}!</h4>
+		{% else %}
+			<h4 class="ml-auto" style="color:white;">{{ cur_dev.first_name }}'s Profile!</h4>
+		{% endif %}
+			<button class="btn btn-outline-warning ml-3" onclick="window.location.href='/logout'">
+				Logout<i class="fa fa-sign-out ml-3" aria-hidden="true"></i>
+			</button>
+		</div>
+	</nav>
+
+	<div class="contianer-fluid">
+
+		<div class="container-flex mx-auto content-dash-dev">
+
+			<div class="row justify-content-center">
+				<h1 class="font-weight-bold"><u>SKILLS</u></h1>
+			</div>
+
+			<div class="row border-bottom border-info">
+
+				<div class="col-md m-4">
+					
+					<div class="row justify-content-center">
+						<h3 class=""><i>Languages</i></h3>
+					</div>
+
+					<div class="row justify-content-center content-border icon-dev-view" id="devs_skills_langs">
+					{% for cur_lang in dev_langs %}
+						<img src="/static/icons/{{ cur_lang.img }}" title="{{ cur_lang.name }}" alt="{{ cur_lang.img }}" name="img_{{ cur_lang.id }}" class="icon-img-sm mx-md-3 mx-2">
+					{% endfor %}
+					</div>
+					
+					{% if cur_dev.id == session.userid and session.acct_type == 'dev' %}
+					<div class="row justify-content-end"><a href="/devs/skills/languages">Edit</a></div>
+					{% endif %}
+
+				</div>
+
+				<div class="col-md m-4">
+					
+					<div class="row justify-content-center">
+						<h3><i>Frameworks/Libraries</i></h3>
+					</div>
+
+					<div class="row justify-content-center content-border icon-dev-view" id="devs_skills_frameworks">
+					{% for cur_frmwrk in dev_frmwrks %}
+						<img src="/static/icons/{{ cur_frmwrk.img }}" title="{{ cur_frmwrk.name }}" alt="{{ cur_frmwrk.img }}" name="img_{{ cur_frmwrk.id }}" class="icon-img-sm mx-md-3 mx-2">
+					{% endfor %}
+					</div>
+					
+					{% if cur_dev.id == session.userid and session.acct_type == 'dev' %}
+					<div class="row justify-content-end"><a href="/devs/skills/frameworks">Edit</a></div>
+					{% endif %}
+
+				</div>
+
+			</div>
+
+			<div class="row mt-4">
+
+				<div class="col-md-3 pt-2">
+					<h4><i>FULL NAME:</i></h4>
+				</div>
+
+				<div class="col-md-9 pt-2 pl-4 border-info dev-profile-border">
+					<h4>{{ cur_dev.first_name }} {{ cur_dev.last_name }}</h4>
+				</div>
+				
+			</div>
+
+			<div class="row">
+
+				<div class="col-md-3 pt-4">
+					<h4><i>EMAIL:</i></h4>
+				</div>
+
+				<div class="col-md-9 pt-4 pl-4 border-info dev-profile-border">
+					<h4>{{ cur_dev.email }}</h4>
+				</div>
+				
+			</div>
+
+			<div class="row">
+
+				<div class="col-md-3 pt-4">
+					<h4><i>LOCATION:</i></h4>
+				</div>
+
+				<div class="col-md-9 pt-4 pl-4 border-info dev-profile-border">
+					<h4>{{ cur_dev.address_city }}, {{ loc_state }}</h4>
+				</div>
+				
+			</div>
+
+			<div class="row">
+
+				<div class="col-md-3 pt-4">
+					<h4><i>SHORT BIO:</i></h4>
+				</div>
+
+				<div class="col-md-9 pt-4 pl-4 border-info dev-profile-border">
+					<h4>{{ cur_dev.profile_bio }}</h4>
+				</div>
+				
+			</div>
+
+			{% if cur_dev.id == session.userid and session.acct_type == 'dev' %}
+			<div class="row"><a href="/devs/profile/edit">Edit</a></div>
+			{% endif %}
+
+		</div>
+
+	</div>
+
+	{% if cur_dev.id == session.userid %}
+	<div class="container-fluid">
+		<!-- LIST JOBS, newest first -->
+	</div>
+	{% endif %}
+
+
+	<!-- JS Libraries needed when using BootstrapCDN -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

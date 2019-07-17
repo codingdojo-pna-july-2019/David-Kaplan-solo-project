@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+	<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/devs_icon_select.js') }}"></script> -->
+	<title>Devs On Deck</title>
+</head>
+<body>
+
+	<!-- Bootstrap Navigation Bar (Fixed) -->
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/">DevsOnDeck</a>
+		<h4 class="ml-auto" style="color:white;">{{ cur_org.org_name }}</h4>
+		<button class="btn btn-outline-warning ml-auto" onclick="window.location.href='/logout'">
+			Logout<i class="fa fa-sign-out ml-3" aria-hidden="true"></i>
+		</button>
+	</nav>
+
+	<div class="contianer-fluid">
+
+		<div class="row container-flex mx-auto content-dash-org">
+
+			<div class="col-md-4">
+
+				<div class="row mb-4">
+					<button type="button" class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/orgs/jobs/new'">List a New Position</button>
+				</div>
+
+				<div class="row p-3 border content-border panel-dash-org">
+					<h3 class="font-weight-bold"><u>Positions To Fill:</u></h3>
+				{% for position in pos_to_fill %}
+					<div><a href="/orgs/jobs/{{ position.id }}">{{ position.name }}</a></div>
+				{% endfor %}
+				</div>
+				
+			</div>
+
+			<div class="col-md-7 offset-md-1">
+
+				<div class="row p-3 bg-secondary border content-border">
+					<h3 class="" style="color:white;">Available Devs</h3>
+				</div>
+
+				<div class="row border content-border panel-dash-org">
+				{% for cur_dev in all_devs %}
+					<div class="m-3 border content-border" style="max-height: 225px; width: 100%; overflow-y: auto; ">
+						<div class="row m-4 justify-content-between">
+							<div class="col-xs-4">
+								<a href="/devs/profile/{{ cur_dev.id }}"><h4>{{ cur_dev.first_name }} {{ cur_dev.last_name }}</h4></a>
+							</div>
+							<div class="col-xs-8 text-center">
+							{% for cur_lang in cur_dev.devs_skills_langs %}
+								<img src="/static/icons/{{ cur_lang.img }}" title="{{ cur_lang.name }}" alt="{{ cur_lang.img }}" name="img_{{ cur_lang.id }}" class="icon-img-view">
+							{% endfor %}
+							</div>
+						</div>
+						<div class="row m-4">
+							<p>{{ cur_dev.profile_bio }}</p>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- JS Libraries needed when using BootstrapCDN -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

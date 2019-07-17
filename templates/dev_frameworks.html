@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/devs_icon_select.js') }}"></script>
+	<title>Devs On Deck</title>
+</head>
+<body>
+
+	<!-- Bootstrap Navigation Bar (Fixed) -->
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/">DevsOnDeck</a>
+		<button class="btn btn-outline-warning ml-auto" type="button">
+			Logout<i class="fa fa-sign-out ml-3" aria-hidden="true"></i>
+		</button>
+	</nav>
+
+	<div class="contianer-fluid">
+
+		<form name="devsProfile" id="devsProfile" action="/devs/update_skills" method="POST">
+		</form>
+
+		<div class="container-flex mx-auto content-main border content-border" style="">
+
+			<div class="row p-3 bg-primary">
+				<h1 class="col-6">Add Your Skills</h1>
+				<span class="col-2 border-left border-top border-bottom border-dark mt-3 bg-secondary" style="max-height: 25px;"></span>
+				<span class="col-2 border-top border-bottom border-dark mt-3 bg-secondary" style="max-height: 25px;"></span>
+				<span class="col-2 border-right border-top border-bottom border-dark mt-3 bg-white" style="max-height: 25px;"></span>
+			</div>
+
+			<div class="row">
+
+				<div class="col-md m-4">
+					<h3>Pick Your Top 5 Frameworks / Libraries</h3>					
+				</div>
+
+				<div class="col-md m-4 content-border icon-dev-view" id="devs_skills_frameworks">
+				{% for cur_frmwrk in dev_frmwrks %}
+					<img src="/static/icons/{{ cur_frmwrk.img }}" title="{{ cur_frmwrk.name }}" alt="{{ cur_frmwrk.img }}" name="img_{{ cur_frmwrk.id }}" class="icon-img-sm">
+				{% endfor %}
+				</div>
+				
+			</div>
+
+			<div class="row">
+
+				<div class="col-md m-4 content-border icon-view" id="framework_list">
+				{% for framework in all_frmwrks %}
+					{% if framework.id in dev_frmwrks_id %}
+						<input type="checkbox" name="dev_framework_input" id="in_skills_framework_{{ framework.id }}" form="devsProfile" style="display:none;" value="{{ framework.id }}" checked>
+					{% else %}
+						<input type="checkbox" name="dev_framework_input" id="in_skills_framework_{{ framework.id }}" form="devsProfile" style="display:none;" value="{{ framework.id }}">
+					{% endif %}
+					<div class="d-inline-block" name="skills_frameworks" id="skills_framework_{{ framework.id }}">
+						<img src="/static/icons/{{ framework.img }}" title="{{ framework.name }}" alt="{{ framework.img }}" name="img_{{ framework.id }}" class="icon-img">
+					</div>
+				{% endfor %}
+				</div>
+
+				<div class="col-md m-4">
+					<p>Its good to include as much information about yourself as a developer as possible.  This helps the orgranizations that are looking to fill positions quickly find the right candidates, and helps us match you with postings you might be qualified for. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+				</div>
+				
+			</div>
+
+			<div class="row p-4">
+
+				<div class="col text-right">
+					<button class="btn btn-secondary px-3" onclick="window.location.href='/devs/dashboard'">Finish Later</button>
+					<button type="submit" form="devsProfile" class="btn btn-primary ml-3 px-5" value="Next">COMPLETE PROFILE</button>
+				</div>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- JS Libraries needed when using BootstrapCDN -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
