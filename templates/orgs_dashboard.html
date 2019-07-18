@@ -29,12 +29,14 @@
 		<div class="row container-flex mx-auto content-dash-org">
 
 			<div class="col-md-4">
-
+				
+				{% if cur_org.id == session.userid and session.acct_type == 'org' %}
 				<div class="row mb-4">
 					<button type="button" class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/orgs/jobs/new'">List a New Position</button>
 				</div>
+				{% endif %}
 
-				<div class="row p-3 border content-border panel-dash-org">
+				<div class="p-3 border content-border panel-dash-org">
 					<h3 class="font-weight-bold"><u>Positions To Fill:</u></h3>
 				{% for position in pos_to_fill %}
 					<div><a href="/orgs/jobs/{{ position.id }}">{{ position.name }}</a></div>
@@ -44,14 +46,15 @@
 			</div>
 
 			<div class="col-md-7 offset-md-1">
-
+				
+				{% if cur_org.id == session.userid and session.acct_type == 'org' %}
 				<div class="row p-3 bg-secondary border content-border">
 					<h3 class="" style="color:white;">Available Devs</h3>
 				</div>
 
 				<div class="row border content-border panel-dash-org">
 				{% for cur_dev in all_devs %}
-					<div class="m-3 border content-border" style="max-height: 225px; width: 100%; overflow-y: auto; ">
+					<div class="m-3 border content-border" style="height: 225px; width: 100%; overflow-y: auto; ">
 						<div class="row m-4 justify-content-between">
 							<div class="col-xs-4">
 								<a href="/devs/profile/{{ cur_dev.id }}"><h4>{{ cur_dev.first_name }} {{ cur_dev.last_name }}</h4></a>
@@ -68,6 +71,7 @@
 					</div>
 				{% endfor %}
 				</div>
+				{% endif %}
 
 			</div>
 

@@ -324,7 +324,7 @@ def orgs_signup():
 def create_position():
 	if 'userid' not in session:
 		return redirect('/')
-	elif session['acct_type'] != 'org'
+	elif session['acct_type'] != 'org':
 		return redirect('/')
 
 	is_valid = True
@@ -356,7 +356,7 @@ def create_position():
 		if ( len(request.form.getlist('dev_framework_input')) > 0 ):
 			for frmwrkID in request.form.getlist('dev_framework_input'):
 				curFrmwrk = FrameLib.query.get(frmwrkID)
-				curPos.devs_skills_frame_lib.append(curFrmwrk)
+				curPos.pos_skills_frame_lib.append(curFrmwrk)
 			db.session.commit()
 
 		return redirect('/orgs/dashboard')
@@ -374,8 +374,9 @@ def devs_dashboard():
 
 	cur_user = Dev.query.get(session['userid'])
 	cur_state = State.query.get(cur_user.address_state)
+	all_jobs = Position.query.all()
 
-	return render_template("devs_dashboard.html", cur_dev=cur_user, dev_langs=cur_user.devs_skills_langs, dev_frmwrks=cur_user.devs_skills_frame_lib, loc_state=cur_state.abbrev)
+	return render_template("devs_dashboard.html", cur_dev=cur_user, dev_langs=cur_user.devs_skills_langs, dev_frmwrks=cur_user.devs_skills_frame_lib, loc_state=cur_state.abbrev, jobs=all_jobs)
 
 
 #######################
@@ -411,7 +412,36 @@ def orgs_dashboard():
 #######################
 @app.route('/orgs/profile/<org_id>')
 def orgs_profile(org_id):
-	pass
+	if 'userid' not in session:
+		return redirect('/')
+
+	if int(session['userid']) == int(org_id):
+		return redirect('/orgs/dashboard')
+
+	cur_org = Org.query.get(org_id)
+	# all_devs = Dev.query.all()
+
+	return render_template("orgs_dashboard.html", cur_org=cur_org, pos_to_fill=cur_org.positions)
+	# all_devs=all_devs, 
+
+
+######################
+## VIEW JOB POSTING ##
+######################
+@app.route('/orgs/jobs/<pos_id>')
+def view_position(pos_id):
+	if 'userid' not in session:
+		return redirect('/')
+
+	if session['acct_type'] == 'dev':
+		cur_user = Dev.query.get(session['userid'])
+	else:
+		cur_user = Org.query.get(session['userid'])
+
+	cur_pos = Position.query.get(pos_id)
+	cur_org = Org.query.get(cur_pos.org)
+
+	return render_template("job_post.html", cur_job=cur_pos, cur_org=cur_org, cur_user=cur_user)
 
 
 #######################
@@ -515,7 +545,7 @@ def org_validate_login():
 def new_position():
 	if 'userid' not in session:
 		return redirect('/')
-	elif session['acct_type'] != 'org'
+	elif session['acct_type'] != 'org':
 		return redirect('/')
 
 	cur_org = Org.query.get(session['userid'])
@@ -539,7 +569,6 @@ def skills_languages():
 	cur_langs_id_list = []
 	for lang in cur_user.devs_skills_langs:
 		cur_langs_id_list.append(lang.id)
-		# print(lang)
 
 	return render_template("dev_languages.html", all_langs=langs_list, dev_langs=cur_user.devs_skills_langs, dev_langs_id=cur_langs_id_list, cur_dev=cur_user)
 
@@ -558,7 +587,6 @@ def skills_frameworks():
 	cur_frmwrk_id_list = []
 	for frmwrk in cur_user.devs_skills_frame_lib:
 		cur_frmwrk_id_list.append(frmwrk.id)
-		# print(lang)
 
 	return render_template("dev_frameworks.html", all_frmwrks=frmwrk_list, dev_frmwrks=cur_user.devs_skills_frame_lib, dev_frmwrks_id=cur_frmwrk_id_list)
 

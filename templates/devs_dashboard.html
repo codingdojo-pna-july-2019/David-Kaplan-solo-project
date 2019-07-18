@@ -136,8 +136,32 @@
 	</div>
 
 	{% if cur_dev.id == session.userid %}
-	<div class="container-fluid">
-		<!-- LIST JOBS, newest first -->
+	<div class="container-fluid mt-5">
+
+		<div class="row bg-secondary">
+			<h1 style="color:white;">Available Positions</h1>
+		</div>
+
+		<div class="row border content-border panel-dash-dev">
+		{% for cur_job in jobs %}
+			<div class="m-3 border content-border" style="height: 225px; width: 100%; overflow-y: auto; ">
+				<div class="row m-4 justify-content-between">
+					<div class="col-xs-4">
+						<a href="/orgs/jobs/{{ cur_job.id }}"><h4>{{ cur_job.name }}</h4></a>
+					</div>
+					<div class="col-xs-8 text-center">
+					{% for cur_lang in cur_job.pos_skills_langs %}
+						<img src="/static/icons/{{ cur_lang.img }}" title="{{ cur_lang.name }}" alt="{{ cur_lang.img }}" name="img_{{ cur_lang.id }}" class="icon-img-view">
+					{% endfor %}
+					</div>
+				</div>
+				<div class="row m-4">
+					<p>{{ cur_job.description }}</p>
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+
 	</div>
 	{% endif %}
 

@@ -10,7 +10,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-	<!-- <script type="text/javascript" src="{{ url_for('static', filename='js/devs_icon_select.js') }}"></script> -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/orgs_icon_select.js') }}"></script>
 	<title>Devs On Deck</title>
 </head>
 <body>
@@ -35,7 +35,7 @@
 				<h1 class="text-center">Add A Position</h1>
 			</div>
 
-			<div class="row">
+			<div class="row p-3">
 
 				<div class="row">
 					<ul>
@@ -53,36 +53,45 @@
 
 				<form action="/orgs/jobs/create" method="POST">
 					<div class="form-group row">
-						<label for="pos_name" class="col-sm-3 col-form-label">Position Name</label>
+						<div class="col-sm-3">
+							<h3 class="">Position Name</h3>
+						</div>
+						<!-- <label for="pos_name" class="col-sm-3 col-form-label">Position Name</label> -->
 						<div class="col-sm-9">
 							<input type="text" class="form-control" name="pos_name">
 						</div>
 					</div>
 					<div class="form-group row">
-						<label for="pos_desc" class="col-sm-3 col-form-label">Description</label>
+						<div class="col-sm-3">
+							<h3 class="">Description</h3>
+						</div>
+						<!-- <label for="pos_desc" class="col-sm-3 col-form-label">Description</label> -->
 						<div class="col-sm-9">
-							<textarea name="pos_desc" class="txt-input" form="devsProfile" placeholder="Enter job details..."></textarea>
+							<textarea name="pos_desc" class="txt-input" placeholder="Enter job details..."></textarea>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-3">
-							<p>Languages</p>
+							<h3 class="mt-3">Languages</h3>
 						</div>
 						<div class="col-md m-4 content-border icon-view" id="lang_list">
 						{% for lang in all_langs %}
 							<div class="d-inline-block">
-								<img src="/static/icons/{{ lang.img }}" title="{{ lang.name }}" alt="{{ lang.img }}" class="icon-img">
-								<input type="checkbox" name="dev_lang_input" value="{{ lang.id }}">
+								<img src="/static/icons/{{ lang.img }}" title="{{ lang.name }}" alt="{{ lang.img }}" class="icon-img" name="skills_langs" id="lang_{{ lang.id }}">
+								<input type="checkbox" class="d-block" name="dev_lang_input" id="in_lang_{{ lang.id }}" value="{{ lang.id }}" style="margin-left:38px;">
 							</div>
 						{% endfor %}
 						</div>
 					</div>
 					<div class="form-group row">
+						<div class="col-sm-3">
+							<h3 class="mt-3">Frameworks</h3>
+						</div>
 						<div class="col-md m-4 content-border icon-view" id="framework_list">
 						{% for framework in all_frmwrks %}
 							<div class="d-inline-block">
-								<img src="/static/icons/{{ framework.img }}" title="{{ framework.name }}" alt="{{ framework.img }}" class="icon-img">
-								<input type="checkbox" class="d-block" name="dev_framework_input" value="{{ framework.id }}">
+								<img src="/static/icons/{{ framework.img }}" title="{{ framework.name }}" alt="{{ framework.img }}" class="icon-img" name="skills_frameworks" id="framework_{{ framework.id }}">
+								<input type="checkbox" class="d-block" name="dev_framework_input" id="in_framework_{{ framework.id }}" value="{{ framework.id }}" style="margin-left:38px;">
 							</div>
 						{% endfor %}
 						</div>
